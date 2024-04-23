@@ -23,6 +23,7 @@ object Conflicto {
     * @return
     */
    def conflictoCeldaTablero(celda : Celda, tablero : Tablero) : Boolean = ???
+
 }
 
 /**
@@ -40,11 +41,33 @@ class Tablero(val dimension : Int, val contenido : List[Celda]) {
     * @param columna
     * @return
     */
-   def agregarReina(fila : Int, columna : Int) = ???
+   def agregarReina(fila : Int, columna : Int) =
+      val celda = new Celda(fila, columna)
+      val nuevoTablero = celda :: contenido
+      nuevoTablero
 
    /**
     * metodo to string
     * @return
     */
-   override def toString : String = ???
+   override def toString : String =
+      var output = ""
+      for (i <- 0 to (dimension - 1)){
+         for (j <- 0 to (dimension - 1)) {
+            if (contenido.contains(new Celda(i, j))) output += "\u265B"
+            else if ((i % 2 == 0 && j % 2 == 0) || (i % 2 != 0 && j % 2 != 0)) output += "\u25A1"
+            else output += "\u25A0"
+         }
+         output += "\n"
+      }
+
+      output
+
+}
+
+object ejecutable extends App {
+
+   val tableroValores = List(new Celda(0, 0))
+   val tablero = new Tablero(4, tableroValores)
+   print(tablero.toString)
 }
