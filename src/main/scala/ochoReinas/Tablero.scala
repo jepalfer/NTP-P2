@@ -22,8 +22,64 @@ object Conflicto {
     * @param tablero
     * @return
     */
-   def conflictoCeldaTablero(celda : Celda, tablero : Tablero) : Boolean = ???
+   def conflictoCeldaTablero(celda : Celda, tablero : Tablero) : Boolean =
+      def compruebaFila(fila: Int, columna: Int) : Boolean =
+         if (tablero.contenido.contains(new Celda(fila, columna))) true
+         else {
+            if (columna < tablero.dimension) compruebaFila(fila, columna + 1)
+            else false
+         }
 
+      def compruebaColumna(fila: Int, columna: Int) : Boolean =
+         if (tablero.contenido.contains(new Celda(fila, columna))) true
+         else {
+            if (fila < tablero.dimension) compruebaColumna(fila + 1, columna)
+            else false
+         }
+
+      def compruebaDiagonalAI(fila: Int, columna: Int) : Boolean =
+         if (tablero.contenido.contains(new Celda(fila, columna))) true
+         else {
+            if (fila >= 0 && columna >= 0) compruebaDiagonalAI(fila - 1, columna - 1)
+            else false
+         }
+
+      def compruebaDiagonalaI(fila: Int, columna: Int): Boolean =
+         if (tablero.contenido.contains(new Celda(fila, columna))) true
+         else {
+            if (fila < tablero.dimension && columna >= 0) compruebaDiagonalaI(fila + 1, columna - 1)
+            else false
+         }
+
+      def compruebaDiagonalAD(fila: Int, columna: Int) : Boolean =
+         if (tablero.contenido.contains(new Celda(fila, columna))) true
+         else {
+            if (fila >= 0 && columna < tablero.dimension) compruebaDiagonalAD(fila - 1, columna + 1)
+            else false
+         }
+
+      def compruebaDiagonalaD(fila: Int, columna: Int) : Boolean =
+         if (tablero.contenido.contains(new Celda(fila, columna))) true
+         else {
+            if (fila < tablero.dimension && columna < tablero.dimension) compruebaDiagonalaD(fila + 1, columna + 1)
+            else false
+         }
+
+      //1. Comprobamos la fila de la celda en la que queremos colocar la reina
+      val hayReinaEnFila = compruebaFila(celda.fila, 0)
+
+      //2. Comprobamos la columna de la celda en la que queremos colocar la reina
+      val hayReinaEnColumna = compruebaColumna(0, celda.columna)
+
+      //3. Comprobamos las diagonales de la celda en la que queremos colocar la reina
+      val hayReinaEnDiagonal1 = compruebaDiagonalAI(celda.fila - 1, celda.columna - 1)
+      val hayReinaEnDiagonal2 = compruebaDiagonalAD(celda.fila - 1, celda.columna + 1)
+      val hayReinaEnDiagonal3 = compruebaDiagonalaI(celda.fila + 1, celda.columna - 1)
+      val hayReinaEnDiagonal4 = compruebaDiagonalaD(celda.fila + 1, celda.columna + 1)
+
+      if (!hayReinaEnFila && !hayReinaEnColumna && !hayReinaEnDiagonal1 && !hayReinaEnDiagonal2 &&
+        !hayReinaEnDiagonal3 && !hayReinaEnDiagonal4) false
+      else true
 }
 
 /**
@@ -41,10 +97,7 @@ class Tablero(val dimension : Int, val contenido : List[Celda]) {
     * @param columna
     * @return
     */
-   def agregarReina(fila : Int, columna : Int) =
-      val celda = new Celda(fila, columna)
-      val nuevoTablero = celda :: contenido
-      nuevoTablero
+   def agregarReina(fila : Int, columna : Int) = new Tablero(dimension, contenido :+ new Celda(fila, columna))
 
    /**
     * metodo to string
@@ -52,11 +105,11 @@ class Tablero(val dimension : Int, val contenido : List[Celda]) {
     */
    override def toString : String =
       var output = ""
-      for (i <- 0 to (dimension - 1)){
-         for (j <- 0 to (dimension - 1)) {
-            if (contenido.contains(new Celda(i, j))) output += "\u265B"
-            else if ((i % 2 == 0 && j % 2 == 0) || (i % 2 != 0 && j % 2 != 0)) output += "\u25A1"
-            else output += "\u25A0"
+      for (i <- (dimension - 1) to (0) by -1){
+         for (j <- (0) to (dimension - 1)) {
+            if (contenido.contains(new Celda(i, j))) output += "\u265B\t"
+            else if ((i % 2 == 0 && j % 2 == 0) || (i % 2 != 0 && j % 2 != 0)) output += "\u25A0\t"
+            else output += "\u25A1\t"
          }
          output += "\n"
       }
@@ -65,9 +118,8 @@ class Tablero(val dimension : Int, val contenido : List[Celda]) {
 
 }
 
-object ejecutable extends App {
+object Reinas extends App {
 
-   val tableroValores = List(new Celda(0, 0))
-   val tablero = new Tablero(4, tableroValores)
-   print(tablero.toString)
+   val buscador = new Buscador(7)
+   print(buscador.resolver.toString)
 }
