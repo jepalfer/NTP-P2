@@ -97,7 +97,7 @@ class Tablero(val dimension : Int, val contenido : List[Celda]) {
     * @param columna
     * @return
     */
-   def agregarReina(fila : Int, columna : Int) = new Tablero(dimension, contenido :+ new Celda(fila, columna))
+   def agregarReina(fila : Int, columna : Int) = new Tablero(dimension, new Celda(fila, columna) ::contenido)
 
    /**
     * metodo to string
@@ -119,7 +119,10 @@ class Tablero(val dimension : Int, val contenido : List[Celda]) {
 }
 
 object Reinas extends App {
-
-   val buscador = new Buscador(7)
-   print(buscador.resolver.toString)
+   val dimension = 8
+   val buscador = new Buscador(dimension)
+   val tablero = buscador.resolver
+   println("------- tablero de tamaño " + dimension + "x" + dimension + " resuelto -------")
+   print(tablero.toString)
+   println("----------------------------------------------")
 }
