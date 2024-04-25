@@ -27,7 +27,7 @@ object BusquedaRecursiva extends App {
       else busquedaBinaria(coleccion, aBuscar)(esMayor, esIgual)(medio + 1, fin)
 
    var Lista2:List[Int] = List(0, 1, 2, 3, 4, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610)
-   var buscado = 55
+   var buscado = 57
    var resultadoBinaria = busquedaBinaria[Int](Lista2, buscado)(esMayor, esIgual)(0, Lista2.length - 1)
    println ("Valor => " + buscado + " encontrado en el índice => " + resultadoBinaria)
 
@@ -77,8 +77,9 @@ object BusquedaRecursiva extends App {
                            (esMayor: (A, A) => Boolean)(implicit numeric: Numeric[A]): Int =
       import numeric._
       def go(indice: Int, inicio: Int, f0: Int, f1: Int): Int =
-         var nuevoIndice = Math.min(inicio + f0, coleccion.length - 1)
-         if (f0 == 0) {
+         val nuevoIndice = Math.min(inicio + f0, coleccion.length - 1)
+
+         if (f0 <= 0) {
             if (aBuscar.equals(coleccion.last)) go(coleccion.length - 1, inicio, f0, f1)//nuevoIndice = coleccion.length - 1
             else -1
 
@@ -89,7 +90,6 @@ object BusquedaRecursiva extends App {
             else {
                if (esMayor(aBuscar, coleccion(nuevoIndice))) go(nuevoIndice, nuevoIndice, f1 - f0, f0)
                else go(nuevoIndice, inicio, f0 - (f1 - f0), f1 - f0)
-
             }
          }
 
@@ -115,6 +115,8 @@ object BusquedaRecursiva extends App {
          else generaListaFibonacci(nuevaLista, valor + one)
       val listaFinal = generaListaFibonacci(listaInicial, numeric.zero)
 
+      for (i <- 0 to listaFinal.length - 1)
+         println(listaFinal(i))
       println("Ultimo elemento fib => " + listaFinal.last)
 
       //Llamada a la funcion
@@ -132,7 +134,7 @@ object BusquedaRecursiva extends App {
       else fibonacci(n - one, act, act + prev)
 
    var Lista3:List[Int] = List(0, 1, 2, 3, 4, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610)
-   buscado = 14
+   buscado = 8
    var resultadoFibonacci = busquedaFibonacci[Int](Lista3, buscado)(esMayor)
    println ("Valor => "+ buscado + " está en el índice => " + resultadoFibonacci)
 
