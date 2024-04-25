@@ -26,8 +26,8 @@ object BusquedaRecursiva extends App {
       else if (esMayor(coleccion(medio), aBuscar)) busquedaBinaria(coleccion, aBuscar)(esMayor, esIgual)(inicio, medio - 1)
       else busquedaBinaria(coleccion, aBuscar)(esMayor, esIgual)(medio + 1, fin)
 
-   var Lista2:List[Int] = List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
-   var buscado = 7
+   var Lista2:List[Int] = List(0, 1, 2, 3, 4, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610)
+   var buscado = 55
    var resultadoBinaria = busquedaBinaria[Int](Lista2, buscado)(esMayor, esIgual)(0, Lista2.length - 1)
    println ("Valor => " + buscado + " encontrado en el índice => " + resultadoBinaria)
 
@@ -79,10 +79,10 @@ object BusquedaRecursiva extends App {
       def go(indice: Int, inicio: Int, f0: Int, f1: Int): Int =
          var nuevoIndice = Math.min(inicio + f0, coleccion.length - 1)
          if (f0 == 0) {
-            if (aBuscar.equals(coleccion.last)) nuevoIndice = coleccion.length - 1
-            else nuevoIndice = -1
+            if (aBuscar.equals(coleccion.last)) go(coleccion.length - 1, inicio, f0, f1)//nuevoIndice = coleccion.length - 1
+            else -1
 
-            go(nuevoIndice, inicio, f0, f1)
+            //go(nuevoIndice, inicio, f0, f1)
          }
          else {
             if (coleccion(nuevoIndice).equals(aBuscar)) nuevoIndice
@@ -132,7 +132,7 @@ object BusquedaRecursiva extends App {
       else fibonacci(n - one, act, act + prev)
 
    var Lista3:List[Int] = List(0, 1, 2, 3, 4, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610)
-   buscado = 0
+   buscado = 14
    var resultadoFibonacci = busquedaFibonacci[Int](Lista3, buscado)(esMayor)
    println ("Valor => "+ buscado + " está en el índice => " + resultadoFibonacci)
 
