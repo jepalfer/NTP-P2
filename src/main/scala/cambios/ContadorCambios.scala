@@ -90,37 +90,38 @@ object ContadorCambios extends App {
 
    listarCambiosPosibles(10, List(1, 2, 3, 4))
 */
+
    def listarCambiosPosibles(cantidad: Int, monedas: List[Int], contador: Int): Int =
-     def go(cantidadActual: Int, monedasActual: List[Int], contadorActual: Int): Int =
-       println(monedasActual(contadorActual) + " - " + cantidadActual)
-       val nuevasMonedas = monedasActual.filter(moneda => moneda <= cantidadActual)
+     def go(cantidadActual: Int, contadorActual: Int): Int =
+       val nuevasMonedas = monedas.filter(moneda => moneda <= cantidadActual)
+       println(nuevasMonedas(contadorActual) + " - " + cantidadActual)
 
        print("Cantidad => " + cantidadActual + " || monedas actual => ")
        for (i <- 0 until nuevasMonedas.length)
          print(nuevasMonedas(i) + " ")
 
        println()
-       val nuevaCantidad = cantidadActual - monedasActual(contadorActual)
-
-       if (nuevaCantidad == 0){
-         1
-         
+       val nuevaCantidad = cantidadActual - nuevasMonedas(contadorActual)
+       if (nuevaCantidad == 0) {
+         contadorCambios += 1
+         val proximaCantidad = cantidadActual + nuevasMonedas(contadorActual)
+         println("hemos llegado a 0")
+         go(proximaCantidad, contadorActual + 1)
        }
        else {
-         if (nuevaCantidad > 0 && nuevasMonedas.isEmpty) 0
-         else go(nuevaCantidad, nuevasMonedas, 0)
+         if (nuevaCantidad > 0 && nuevasMonedas.isEmpty) go(cantidadActual, contadorActual + 1)
+         else go(nuevaCantidad, 0)
        }
 
      val nuevasMonedas = monedas.filter(moneda => moneda <= cantidad)
-     contadorCambios += go(cantidad, nuevasMonedas, contador)
-     if (contador < nuevasMonedas.length - 1){
+     contadorCambios += go(cantidad, contador)
+     if (contador < nuevasMonedas.length - 1) {
        listarCambiosPosibles(cantidad, nuevasMonedas, contador + 1)
      }
      else contadorCambios
 
    var cantidad = 20
-   var monedas:List[Int] = List(22, 1, 2, 3, 4, 21)
+   var monedas:List[Int] = List(2, 5, 20)
    var contador = 0
-   listarCambiosPosibles(cantidad, monedas, contador)
-   println("Hay " + contadorCambios + " cambios posibles")
+   println(listarCambiosPosibles(cantidad, monedas, 0))
 }
