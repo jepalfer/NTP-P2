@@ -44,7 +44,8 @@ case class Cambio(val cantidad: Int, val cambio: Map[Int, Int]) {
 /**
  * objeto para implementar los metodos de contador de cambios
  */
-object ContadorCambios {
+object ContadorCambios extends App {
+   var contadorCambios = 0
    /**
     * version inicial del contador
     *
@@ -52,5 +53,74 @@ object ContadorCambios {
     * @param monedas
     * @return
     */
-   def listarCambiosPosibles(cantidad: Int, monedas: List[Int]): Int = ???
+   /*
+   def listarCambiosPosibles(cantidad: Int, monedas: List[Int]): Int = {
+      if (monedas.nonEmpty) println("Entro en listar cambios con moneda " + monedas.head)
+      if (cantidad == 0 || monedas.isEmpty) 0
+      else {
+         val monedasNuevas = monedas
+         val monedaActual = monedas.head
+         val cuantasCambia = (cantidad / monedas.head).toInt
+
+         def go(cantidad: Int, monedasActual: List[Int]): Int = {
+            if (cantidad == 0) {
+               println("Primer elemento de monedas " + monedasActual(0))
+               1
+            }
+            else if (cantidad < 0) 0
+            else {
+               println("Entro aqui con moneda " + monedasActual.head)
+               val monedaActual = monedasActual.head
+               val cuantasCambia = (cantidad / monedasActual.head).toInt
+               if (cuantasCambia == 0 && monedasActual.tail.nonEmpty) {
+                  println("entro en el if importante con moneda " + monedasActual.head + " y monedas(1) = " + monedasActual(1))
+                 println(monedas.head)
+                 go(cantidad, monedas.filterNot(_ == monedasActual.head))
+               } else {
+                 go(cantidad - monedasActual.head, monedasActual)
+               }
+            }
+         }
+
+         contadorCambios += go(cantidad - monedas.head, monedas)
+         listarCambiosPosibles(cantidad, monedas.tail)
+      }
+   }
+
+
+   listarCambiosPosibles(10, List(1, 2, 3, 4))
+*/
+   def listarCambiosPosibles(cantidad: Int, monedas: List[Int], contador: Int): Int =
+     def go(cantidadActual: Int, monedasActual: List[Int], contadorActual: Int): Int =
+       println(monedasActual(contadorActual) + " - " + cantidadActual)
+       val nuevasMonedas = monedasActual.filter(moneda => moneda <= cantidadActual)
+
+       print("Cantidad => " + cantidadActual + " || monedas actual => ")
+       for (i <- 0 until nuevasMonedas.length)
+         print(nuevasMonedas(i) + " ")
+
+       println()
+       val nuevaCantidad = cantidadActual - monedasActual(contadorActual)
+
+       if (nuevaCantidad == 0){
+         1
+         
+       }
+       else {
+         if (nuevaCantidad > 0 && nuevasMonedas.isEmpty) 0
+         else go(nuevaCantidad, nuevasMonedas, 0)
+       }
+
+     val nuevasMonedas = monedas.filter(moneda => moneda <= cantidad)
+     contadorCambios += go(cantidad, nuevasMonedas, contador)
+     if (contador < nuevasMonedas.length - 1){
+       listarCambiosPosibles(cantidad, nuevasMonedas, contador + 1)
+     }
+     else contadorCambios
+
+   var cantidad = 20
+   var monedas:List[Int] = List(22, 1, 2, 3, 4, 21)
+   var contador = 0
+   listarCambiosPosibles(cantidad, monedas, contador)
+   println("Hay " + contadorCambios + " cambios posibles")
 }
