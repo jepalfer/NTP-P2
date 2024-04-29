@@ -45,6 +45,7 @@ def resolver : Tablero =
       * @param columnasColocadas lista auxliar para hacer backtracking al tablero anterior
       * @return tablero con una solución válida al problema de las N reinas
       */
+     @annotation.tailrec
      def go(fila: Int, columna: Int, contador: Int = 0, tablero: Tablero, columnasColocadas: List[Int]): Tablero =
         //Si hemos colocado todas las reinas devolvemos el tablero
        if (contador == tablero.dimension) tablero

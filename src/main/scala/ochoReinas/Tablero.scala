@@ -23,6 +23,14 @@ object Conflicto {
     * @return
     */
    def conflictoCeldaTablero(celda : Celda, tablero : Tablero) : Boolean =
+
+      /**
+       * metodo auxiliar para comprobar que la reina que estamos colocando no se choca horizontalmente
+       * (fila) con otra reina
+       * @param fila fila de la celda que estamos comprobando
+       * @param columna columna de la celda que estamos comprobando
+       * @return
+       */
       def compruebaFila(fila: Int, columna: Int) : Boolean =
          if (tablero.contenido.contains(new Celda(fila, columna))) true
          else {
@@ -30,6 +38,13 @@ object Conflicto {
             else false
          }
 
+      /**
+       * metodo auxiliar para comprobar que la reina que estamos colocando no se choca verticalmente
+       * (columna) con otra reina
+       * @param fila fila de la celda que estamos comprobando
+       * @param columna columna de la celda que estamos comprobando
+       * @return
+       */
       def compruebaColumna(fila: Int, columna: Int) : Boolean =
          if (tablero.contenido.contains(new Celda(fila, columna))) true
          else {
@@ -37,6 +52,13 @@ object Conflicto {
             else false
          }
 
+      /**
+       * metodo auxiliar para comprobar que la reina que estamos colocando no se choca en la diagonal
+       * de arriba izquierda con otra reina
+       * @param fila fila de la celda que estamos comprobando
+       * @param columna columna de la celda que estamos comprobando
+       * @return
+       */
       def compruebaDiagonalAI(fila: Int, columna: Int) : Boolean =
          if (tablero.contenido.contains(new Celda(fila, columna))) true
          else {
@@ -44,6 +66,13 @@ object Conflicto {
             else false
          }
 
+      /**
+       * metodo auxiliar para comprobar que la reina que estamos colocando no se choca en la diagonal
+       * de arriba derecha con otra reina
+       * @param fila fila de la celda que estamos comprobando
+       * @param columna columna de la celda que estamos comprobando
+       * @return
+       */
       def compruebaDiagonalaI(fila: Int, columna: Int): Boolean =
          if (tablero.contenido.contains(new Celda(fila, columna))) true
          else {
@@ -51,6 +80,13 @@ object Conflicto {
             else false
          }
 
+      /**
+       * metodo auxiliar para comprobar que la reina que estamos colocando no se choca en la diagonal
+       * de abajo izquierda con otra reina
+       * @param fila fila de la celda que estamos comprobando
+       * @param columna columna de la celda que estamos comprobando
+       * @return
+       */
       def compruebaDiagonalAD(fila: Int, columna: Int) : Boolean =
          if (tablero.contenido.contains(new Celda(fila, columna))) true
          else {
@@ -58,6 +94,13 @@ object Conflicto {
             else false
          }
 
+      /**
+       * metodo auxiliar para comprobar que la reina que estamos colocando no se choca en la diagonal
+       * de abajo derecha con otra reina
+       * @param fila fila de la celda que estamos comprobando
+       * @param columna columna de la celda que estamos comprobando
+       * @return
+       */
       def compruebaDiagonalaD(fila: Int, columna: Int) : Boolean =
          if (tablero.contenido.contains(new Celda(fila, columna))) true
          else {
@@ -77,6 +120,7 @@ object Conflicto {
       val hayReinaEnDiagonal3 = compruebaDiagonalaI(celda.fila + 1, celda.columna - 1)
       val hayReinaEnDiagonal4 = compruebaDiagonalaD(celda.fila + 1, celda.columna + 1)
 
+      //4. Hacemos la comprobación de las colisiones para determinar si se puede colocar o no una reina
       if (!hayReinaEnFila && !hayReinaEnColumna && !hayReinaEnDiagonal1 && !hayReinaEnDiagonal2 &&
         !hayReinaEnDiagonal3 && !hayReinaEnDiagonal4) false
       else true
@@ -119,7 +163,7 @@ class Tablero(val dimension : Int, val contenido : List[Celda]) {
 }
 
 object Reinas extends App {
-   val dimension = 8
+   val dimension = 6
    val buscador = new Buscador(dimension)
    val tablero = buscador.resolver
    println("------- tablero de tamaño " + dimension + "x" + dimension + " resuelto -------")
